@@ -18,32 +18,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 require __DIR__ . '/auth.php';
 
-Route::get('/enterprises', [EnterpriseController::class, 'index'])->middleware(['auth'])->name('enterprise:index');
+Route::get('/enterprises', [EnterpriseController::class, 'index'])->middleware(['auth:sanctum'])->name('enterprise:index');
 
-Route::post('/enterprises', [EnterpriseController::class, 'create'])->middleware(['auth'])->name('enterprise:create');
+Route::post('/enterprises', [EnterpriseController::class, 'create'])->middleware(['auth:sanctum'])->name('enterprise:create');
 
-Route::get('/enterprises/{enterprise_id}/sectors', [SectorController::class, 'indexByEnterprise'])->middleware(['auth'])->name('sectors:list_by_enterprise');
+Route::get('/enterprises/{enterprise_id}/sectors', [SectorController::class, 'indexByEnterprise'])->middleware(['auth:sanctum'])->name('sectors:list_by_enterprise');
 
-Route::post('/enterprises/{enterprise_id}/sectors', [SectorController::class, 'createForEnterprise'])->middleware(['auth'])->name('sectors:create_for_enterprise');
+Route::post('/enterprises/{enterprise_id}/sectors', [SectorController::class, 'createForEnterprise'])->middleware(['auth:sanctum'])->name('sectors:create_for_enterprise');
 
-Route::patch('/enterprises/{enterprise_id}/sectors/{sector_id}', [SectorController::class, 'edit'])->middleware(['auth'])->name('sectors:edit');
+Route::patch('/enterprises/{enterprise_id}/sectors/{sector_id}', [SectorController::class, 'edit'])->middleware(['auth:sanctum'])->name('sectors:edit');
 
-Route::get('/enterprises/{enterprise_id}/analyses', [AnalysisController::class, 'indexByEnterprise'])->middleware(['auth'])->name('analyses:create_for_enterprise');
+Route::get('/enterprises/{enterprise_id}/analyses', [AnalysisController::class, 'indexByEnterprise'])->middleware(['auth:sanctum'])->name('analyses:create_for_enterprise');
 
-Route::post('/enterprises/{enterprise_id}/analyses', [AnalysisController::class, 'createForEnterprise'])->middleware(['auth'])->name('analyses:create_for_enterprise');
+Route::post('/enterprises/{enterprise_id}/analyses', [AnalysisController::class, 'createForEnterprise'])->middleware(['auth:sanctum'])->name('analyses:create_for_enterprise');
 
-Route::post('/analyses/{analysis_id}/sectors/{sector_id}', [SectorAnswerController::class, 'create'])->middleware(['auth'])->name('answers:create_for_sectors');
+Route::post('/analyses/{analysis_id}/sectors/{sector_id}', [SectorAnswerController::class, 'create'])->middleware(['auth:sanctum'])->name('answers:create_for_sectors');
 
-Route::post('/analyses/{analysis_id}/enterprises/{enterprise_id}', [EnterpriseAnswerController::class, 'create'])->middleware(['auth'])->name('answers:create_for_sectors');
+Route::post('/analyses/{analysis_id}/enterprises/{enterprise_id}', [EnterpriseAnswerController::class, 'create'])->middleware(['auth:sanctum'])->name('answers:create_for_sectors');
 
-Route::get('/analyses/{analysis_id}/result', [AnalysisController::class, 'result'])->middleware(['auth'])->name('answers:create_for_sectors');
+Route::get('/analyses/{analysis_id}/result', [AnalysisController::class, 'result'])->middleware(['auth:sanctum'])->name('answers:create_for_sectors');
