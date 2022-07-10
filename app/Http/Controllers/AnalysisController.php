@@ -84,7 +84,7 @@ class AnalysisController extends Controller
         $sectorsConformityIndex = $this->calculateSectorsConformity($sectorAnswers);
 
         return response([
-            'enterprise' => ['name' => $enterprise->name, 'index' => $enterpriseSecurityIndex],
+            'enterprise' => ['name' => $enterprise->name, 'index' => $enterpriseSecurityIndex, 'answers' => $enterpriseAnswers->answers],
             'sectors' => $sectorsConformityIndex
         ], 200);
     }
@@ -113,7 +113,7 @@ class AnalysisController extends Controller
             $partialNCIndex = $negativeAnswers / $applicableAnswers;
             $finalNCIndex = $sectorCriticalityLevel * $partialNCIndex;
 
-            return ['name' => $sectorAnswer['name'], 'finalNCIndex' => round($finalNCIndex, 4)];
+            return ['name' => $sectorAnswer['name'], 'gin' => $sectorAnswer['gin'], 'gci' => $sectorAnswer['gci'], 'answers' => $sectorAnswer['answers'], 'finalNCIndex' => round($finalNCIndex, 4)];
         }, $sectorAnswers);
     }
 }
