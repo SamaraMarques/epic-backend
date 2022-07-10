@@ -18,7 +18,7 @@ class Cors
     {
         return $next($request)
         ->header('Access-Control-Allow-Credentials', "true")
-        ->header('Access-Control-Allow-Origin', 'http://localhost')
+        ->header('Access-Control-Allow-Origin', 'http://177.22.162.34')
         ->header('Access-Control-Allow-Methods', "PUT, POST, DELETE, GET, OPTIONS")
         ->header('Access-Control-Allow-Headers', "Accept, Authorization, Content-Type, Set-Cookie");
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Enterprise\CreateEnterpriseRequest;
+use App\Http\Requests\Sector\EditEnterpriseRequest;
 use App\Models\Enterprise;
 use App\Models\EnterpriseUser;
 use App\Models\Member;
@@ -70,9 +71,13 @@ class EnterpriseController extends Controller
      * @param  \App\Models\Enterprise  $enterprise
      * @return \Illuminate\Http\Response
      */
-    public function show(Enterprise $enterprise)
+    public function show(string $enterpriseId)
     {
-        //
+        $enterprise = User::find(Auth::id())->enterprises()->find($enterpriseId);
+
+        if ($enterprise) return response(['id' => $enterprise->id, 'name' => $enterprise->name]);
+
+        throw new HttpException(404, 'Enterprise not found');
     }
 
     /**
@@ -81,9 +86,18 @@ class EnterpriseController extends Controller
      * @param  \App\Models\Enterprise  $enterprise
      * @return \Illuminate\Http\Response
      */
-    public function edit(Enterprise $enterprise)
+    public function edit(string $enterpriseId, EditEnterpriseRequest $request)
     {
-        //
+        $enterprise = User::find(Auth::id())->enterprises()->where("enterprise_id", $enterpriseId)->first();
+
+        if (!$enterprise) {
+            throw new HttpException(401, 'Enterprise not found');
+        }
+
+        $enterprise->name = $request->name;
+        $enterprise->save();
+
+        return response(['success' => true, 'message' => 'Enterprise edited successfully'], 200);
     }
 
     /**
@@ -101,11 +115,23 @@ class EnterpriseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Enterprise  $enterprise
+     * @param  string  $enterpriseId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Enterprise $enterprise)
+    public function destroy(string $enterpriseId)
     {
-        //
+        $hasEnterprise = User::find(Auth::id())->enterprises()->find($enterpriseId)->first();
+
+        if(!$hasEnterprise){             
+            throw new HttpException(404, 'No enterprise has been found with this id');
+        }
+
+        $hasEnterprise->sectors()->delete();
+
+        $hasEnterprise->users()->delete();
+
+        $hasEnterprise->delete();
+
+        return response('Enterprise deleted successfully', 200);
     }
 }

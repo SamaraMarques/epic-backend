@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnalysisController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\EnterpriseAnswerController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\SectorAnswerController;
@@ -20,11 +21,19 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 
+Route::get('/me', [RegisteredUserController::class, 'me'])->middleware(['auth:sanctum'])->name('user:me');
+
 Route::get('/enterprises', [EnterpriseController::class, 'index'])->middleware(['auth:sanctum'])->name('enterprise:index');
 
 Route::post('/enterprises', [EnterpriseController::class, 'create'])->middleware(['auth:sanctum'])->name('enterprise:create');
 
+Route::get('/enterprises/{enterprise_id}', [EnterpriseController::class, 'show'])->middleware(['auth:sanctum'])->name('enterprise:edit');
+
+Route::patch('/enterprises/{enterprise_id}', [EnterpriseController::class, 'edit'])->middleware(['auth:sanctum'])->name('enterprise:edit');
+
 Route::get('/enterprises/{enterprise_id}/sectors', [SectorController::class, 'indexByEnterprise'])->middleware(['auth:sanctum'])->name('sectors:list_by_enterprise');
+
+Route::get('/sectors/{sector_id}', [SectorController::class, 'show'])->middleware(['auth:sanctum'])->name('sectors:show');
 
 Route::post('/enterprises/{enterprise_id}/sectors', [SectorController::class, 'createForEnterprise'])->middleware(['auth:sanctum'])->name('sectors:create_for_enterprise');
 

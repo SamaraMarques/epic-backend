@@ -104,9 +104,17 @@ class SectorController extends Controller
      * @param  \App\Models\Sector  $sector
      * @return \Illuminate\Http\Response
      */
-    public function show(Sector $sector)
+    public function show(string $sectorId)
     {
-        //
+        $enterprises = User::find(Auth::id())->enterprises()->get();
+
+        foreach ($enterprises as $enterprise){
+            $sector = $enterprise->sectors()->where('id', $sectorId)->first();
+
+            if ($sector) return response(['id' => $sector->id, 'enterprise_id' => $sector->enterprise_id, 'name' => $sector->name]);
+        }
+
+        throw new HttpException(404, 'Sector not found');
     }
 
     /**

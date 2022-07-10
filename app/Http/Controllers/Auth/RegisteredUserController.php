@@ -51,4 +51,16 @@ class RegisteredUserController extends Controller
 
         return;
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function me()
+    {
+        $user = User::find(Auth::id())->first();
+
+        return response(['user' => $user]);
+    }
 }

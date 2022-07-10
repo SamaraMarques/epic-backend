@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Analysis;
+use App\Models\EnterpriseAnswer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,9 +48,9 @@ class AnalysisController extends Controller
             throw new HttpException(404, 'Enterprise not found');
         }
 
-        Analysis::create(array('enterprise_id' => $enterpriseId));
+        $analysis = Analysis::create(array('enterprise_id' => $enterpriseId));
 
-        return response(['success' => true, 'message' => 'Analysis created successfully'], 201);
+        return response(['success' => true, 'message' => 'Analysis created successfully', 'analysis_id' => $analysis->id], 201);
     }
 
     /**
@@ -72,7 +73,8 @@ class AnalysisController extends Controller
             throw new HttpException(404, 'Enterprise not found');
         }
 
-        $enterpriseAnswers = json_decode($analysis->enterpriseAnswers->first()->answers);
+        $enterpriseAnswers = json_decode(EnterpriseAnswer::where('analysis_id', $analysisId)->first()->answers);
+
         $enterpriseSecurityIndex = $this->calculateEnterpriseSecurity($enterpriseAnswers->answers);
 
         $sectorAnswers = $analysis->sectorsAnswers->map(function ($sectorAnswer) {
