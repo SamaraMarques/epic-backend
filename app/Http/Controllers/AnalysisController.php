@@ -94,7 +94,7 @@ class AnalysisController extends Controller
         $affirmative = count(array_filter($answers, function ($answer) {
             return $answer == 1;
         }));
-        return $affirmative / count($answers);
+        return round($affirmative / count($answers), 2);
     }
 
     private function calculateSectorsConformity(array $sectorAnswers)
@@ -113,7 +113,7 @@ class AnalysisController extends Controller
             $partialNCIndex = $negativeAnswers / $applicableAnswers;
             $finalNCIndex = $sectorCriticalityLevel * $partialNCIndex;
 
-            return ['name' => $sectorAnswer['name'], 'gin' => $sectorAnswer['gin'], 'gci' => $sectorAnswer['gci'], 'answers' => $sectorAnswer['answers'], 'finalNCIndex' => round($finalNCIndex, 4)];
+            return ['name' => $sectorAnswer['name'], 'gin' => $sectorAnswer['gin'], 'gci' => $sectorAnswer['gci'], 'answers' => $sectorAnswer['answers'], 'finalNCIndex' => round($finalNCIndex, 2)];
         }, $sectorAnswers);
     }
 }
