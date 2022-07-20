@@ -85,7 +85,8 @@ class AnalysisController extends Controller
 
         return response([
             'enterprise' => ['name' => $enterprise->name, 'index' => $enterpriseSecurityIndex, 'answers' => $enterpriseAnswers->answers, 'id' => $enterprise->id],
-            'sectors' => $sectorsConformityIndex
+            'sectors' => $sectorsConformityIndex,
+            'created_at' => $analysis->created_at
         ], 200);
     }
 
