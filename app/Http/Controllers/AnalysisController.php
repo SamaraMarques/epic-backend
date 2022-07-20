@@ -84,7 +84,7 @@ class AnalysisController extends Controller
         $sectorsConformityIndex = $this->calculateSectorsConformity($sectorAnswers);
 
         return response([
-            'enterprise' => ['name' => $enterprise->name, 'index' => $enterpriseSecurityIndex, 'answers' => $enterpriseAnswers->answers],
+            'enterprise' => ['name' => $enterprise->name, 'index' => $enterpriseSecurityIndex, 'answers' => $enterpriseAnswers->answers, 'id' => $enterprise->id],
             'sectors' => $sectorsConformityIndex
         ], 200);
     }

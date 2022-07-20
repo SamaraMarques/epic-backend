@@ -20,7 +20,7 @@ services:
     volumes:
       - ./:/var/www
     networks:
-      - default
+      - epic-frontend_default
 
   db:
     image: mysql:5.7.22
@@ -37,7 +37,7 @@ services:
       - dbdata:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
-      - default
+      - epic-frontend_default
 
   nginx:
     image: nginx:1.17-alpine
@@ -49,11 +49,11 @@ services:
       - ./:/var/www
       - ./docker/nginx:/etc/nginx/conf.d
     networks:
-      - default
+      - epic-frontend_default
 
 networks:
-  default:
-    driver: bridge
+  epic-frontend_default:
+    external: true
 
 volumes:
   dbdata:
