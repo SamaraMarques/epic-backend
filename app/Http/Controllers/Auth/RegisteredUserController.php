@@ -59,7 +59,7 @@ class RegisteredUserController extends Controller
      */
     public function me()
     {
-        $user = User::find(Auth::id())->first();
+        $user = User::find(Auth::id());
 
         return response(['user' => $user]);
     }
