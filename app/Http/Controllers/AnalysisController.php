@@ -92,10 +92,14 @@ class AnalysisController extends Controller
 
     private function calculateEnterpriseSecurity(array $answers)
     {
+        $applicableAnswers = count(array_filter($answers, function ($answer) {
+            return $answer != 2;
+        }));
+
         $affirmative = count(array_filter($answers, function ($answer) {
             return $answer == 1;
         }));
-        return round($affirmative / count($answers), 2);
+        return round($affirmative / $applicableAnswers, 2);
     }
 
     private function calculateSectorsConformity(array $sectorAnswers)
