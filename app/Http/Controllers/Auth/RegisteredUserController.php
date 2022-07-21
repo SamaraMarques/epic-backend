@@ -61,6 +61,8 @@ class RegisteredUserController extends Controller
     {
         $user = User::find(Auth::id());
 
+        unset($user->password);
+        
         return response(['user' => $user]);
     }
 }
