@@ -7,6 +7,7 @@ use App\Models\EnterpriseAnswer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AnalysisController extends Controller
@@ -120,5 +121,37 @@ class AnalysisController extends Controller
 
             return ['name' => $sectorAnswer['name'], 'gin' => $sectorAnswer['gin'], 'gci' => $sectorAnswer['gci'], 'answers' => $sectorAnswer['answers'], 'finalNCIndex' => round($finalNCIndex, 2)];
         }, $sectorAnswers);
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  string  $analysisId
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(string $analysisId)
+    {
+        $analysis = Analysis::find($analysisId);
+
+        if (!$analysis) {
+            throw new HttpException(404, "Analysis not found");
+        }
+
+        $enterprise = User::find(Auth::id())->enterprises()->where('enterprise_id', $analysis->enterprise_id)->first();
+
+        if (!$enterprise) {
+            throw new HttpException(404, 'Enterprise not found');
+        }
+
+        DB::beginTransaction();
+        $analysis->enterpriseAnswers->delete();
+        foreach ($analysis->sectorsAnswers as $sectorAnswer){
+            $sectorAnswer->delete();
+        }
+        $analysis->delete();
+        DB::commit();
+
+        return response(['success' => true, 'message' => 'Analysis deleted successfully'], 200);
     }
 }

@@ -47,4 +47,6 @@ Route::post('/analyses/{analysis_id}/sectors/{sector_id}', [SectorAnswerControll
 
 Route::post('/analyses/{analysis_id}/enterprises/{enterprise_id}', [EnterpriseAnswerController::class, 'create'])->middleware(['auth:sanctum'])->name('answers:create_for_sectors');
 
-Route::get('/analyses/{analysis_id}/result', [AnalysisController::class, 'result'])->middleware(['auth:sanctum'])->name('answers:create_for_sectors');
+Route::get('/analyses/{analysis_id}/result', [AnalysisController::class, 'result'])->middleware(['auth:sanctum'])->name('analysis:result');
+
+Route::delete('/analyses/{analysis_id}', [AnalysisController::class, 'destroy'])->middleware(['auth:sanctum'])->name('analysis:delete');
