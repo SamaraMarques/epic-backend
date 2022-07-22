@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EnterpriseAnswer extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +19,10 @@ class EnterpriseAnswer extends Model
         'analysis_id',
         'enterprise_id',
         'answers',
+    ];
+
+    protected $dates = [
+        'deleted_at',
     ];
 
     /**

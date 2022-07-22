@@ -132,11 +132,22 @@ class SectorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Sector  $sector
+     * @param  string  $sectorId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sector $sector)
+    public function destroy(string $sectorId)
     {
-        //
+        $enterprises = User::find(Auth::id())->enterprises()->get();
+
+        foreach ($enterprises as $enterprise){
+            $sector = $enterprise->sectors()->where('id', $sectorId)->first();
+
+            if ($sector) {
+                $sector->delete();
+                return response(['success' => true, 'message' => 'Sector deleted successfully'], 200);
+            }
+        }
+
+        throw new HttpException(404, 'Sector not found');
     }
 }

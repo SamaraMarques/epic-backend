@@ -144,13 +144,7 @@ class AnalysisController extends Controller
             throw new HttpException(404, 'Enterprise not found');
         }
 
-        DB::beginTransaction();
-        $analysis->enterpriseAnswers->delete();
-        foreach ($analysis->sectorsAnswers as $sectorAnswer){
-            $sectorAnswer->delete();
-        }
         $analysis->delete();
-        DB::commit();
 
         return response(['success' => true, 'message' => 'Analysis deleted successfully'], 200);
     }

@@ -35,6 +35,8 @@ Route::get('/enterprises/{enterprise_id}/sectors', [SectorController::class, 'in
 
 Route::get('/sectors/{sector_id}', [SectorController::class, 'show'])->middleware(['auth:sanctum'])->name('sectors:show');
 
+Route::delete('/sectors/{sector_id}', [SectorController::class, 'destroy'])->middleware(['auth:sanctum'])->name('sectors:delete');
+
 Route::post('/enterprises/{enterprise_id}/sectors', [SectorController::class, 'createForEnterprise'])->middleware(['auth:sanctum'])->name('sectors:create_for_enterprise');
 
 Route::patch('/enterprises/{enterprise_id}/sectors/{sector_id}', [SectorController::class, 'edit'])->middleware(['auth:sanctum'])->name('sectors:edit');
